@@ -32,5 +32,3 @@ def send_email(subject, body):
     except Exception as e:
         print("Error sending email:", e)
 
-# Example Usage
-send_email("New Jobs Today", "<h3>1. Software Engineer at Google</h3><p>Apply here: example.com</p>")
