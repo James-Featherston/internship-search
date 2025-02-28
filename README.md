@@ -6,4 +6,4 @@ This Selenium-based web scraper automatically scans job listing websites for new
 1) Create a .env file with the keys EMAIL_SENDER, EMAIL_PASSWORD, and EMAIL_RECEIVER
 2) Set the email sender and receiver.
 3) Generate a gmail password in your app passwords of your gmail account and add it for the email password.
-4) 
+4) Install selenium and python-dotenv
