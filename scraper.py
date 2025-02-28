@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -14,8 +15,18 @@ JOBS_FILE = "sent_jobs.json"
 def scrape_job(driver, index):
 
     """ Scrape all of the data needed for the email and return a job object"""
-    company_elem = driver.find_element(By.XPATH, f'//*[@id="repo-content-pjax-container"]/div/div/div/div[1]/react-partial/div/div/div[3]/div[2]/div/div[2]/article/markdown-accessiblity-table/table/tbody/tr[{index}]/td[1]/strong')
-    company = company_elem.text.strip()
+    child = 0
+    while True:
+        try:
+            company_elem = driver.find_element(By.XPATH, f'//*[@id="repo-content-pjax-container"]/div/div/div/div[1]/react-partial/div/div/div[3]/div[2]/div/div[2]/article/markdown-accessiblity-table/table/tbody/tr[{index - child}]/td[1]/strong')
+            company = company_elem.text.strip()
+            break
+        except NoSuchElementException:
+            child += 1
+            if child == 10:
+                company = "Unknown"
+                break
+            continue
     role_elem = driver.find_element(By.XPATH, f'//*[@id="repo-content-pjax-container"]/div/div/div/div[1]/react-partial/div/div/div[3]/div[2]/div/div[2]/article/markdown-accessiblity-table/table/tbody/tr[{index}]/td[2]')
     role = role_elem.text.strip()
     location_elem = driver.find_element(By.XPATH, f'//*[@id="repo-content-pjax-container"]/div/div/div/div[1]/react-partial/div/div/div[3]/div[2]/div/div[2]/article/markdown-accessiblity-table/table/tbody/tr[{index}]/td[3]')
